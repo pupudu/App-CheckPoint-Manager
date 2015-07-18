@@ -72,12 +72,54 @@ public class Main {
         System.out.println("6. Display All details");
     }
 
+    /**
+     * Adds a new checkpoint to the log.txt file
+     */
     private static void addCheckPoint() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        displayAddCheckPointMenu();
+        
+        System.out.println("Please Enter Time as a number(-1 to get Current System Time)");
+        long time = readTime(true); //allows system time as an option
+        
+        System.out.println("Enter Application State"
+                + "\n1.on"
+                + "\n2.off");
+        int stateInt = getUserOption(2);
+        String state = (stateInt==1)?"on":"off";
+        
+        int number = Checkpoint.getLastIndex();     //number of the last entry in the log.txt file
+        
+        Checkpoint.addCheckpoint(number, time, state);
+        System.out.println("New Checkpoint Added Successfully");
+        
     }
 
     private static void searchCheckPoint() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("Select Search Method"
+                + "\n1.Search By Number"
+                + "\n2.Search By Time");
+        int option=getUserOption(2);
+        
+        if(option==1){
+            System.out.println("Enter entry Number:");
+            int number = readNumber();
+            String result = Checkpoint.searchCheckpoint(Integer.toString(number), 0); //searchCheckpoint method has search parameter as a String for easy processing
+            if(result.equals("")){
+                System.out.println("Checkpoint with given number not found");
+            } else {
+                System.out.println("Checkpoint Found:"+result);
+            }
+        }else{  //option can either be 1 or 2 (enforced by the getUserOption method)
+            System.out.println("Enter entry timeStamp:");
+            long time = readTime(false); //doesn't allow current system time
+            String result = Checkpoint.searchCheckpoint(Long.toString(time), 0); //searchCheckpoint method has search parameter as a String for easy processing
+            if(result.equals("")){
+                System.out.println("Checkpoint with given timestamp not found");
+            } else {
+                System.out.println("Checkpoint Found:"+result);
+            }
+        }
+        
     }
 
     private static void modifyCheckPoint() {
@@ -95,4 +137,45 @@ public class Main {
     private static void displayAllDetails() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    private static void displayAddCheckPointMenu() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    /**
+     * @return UserInput time as a Long or current System time if user input is negative
+     */
+    private static long readTime(boolean allowSysTime) {
+        try{
+            /* Scanner to read inputs from keyboard*/
+            Scanner sc=new Scanner(System.in);
+            String timeStr=sc.next();
+            long time=Long.parseLong(timeStr);
+            if(time<0 && allowSysTime)
+                time=System.currentTimeMillis();  //return curret system time if negative input given and system time selection is allowed
+            return time;
+        }catch(Exception e){
+        }
+        System.out.println("Invalid Input Try Again");
+        return readTime(allowSysTime); 
+    }
+    
+    /**
+     * Reads user input entry number
+     * @return user input number as an Integer
+     */
+    private static int readNumber(){
+        try{
+            /* Scanner to read inputs from keyboard*/
+            Scanner sc=new Scanner(System.in);
+            String numberStr=sc.next();
+            int number=Integer.parseInt(numberStr);
+            return number;
+        }catch(Exception e){
+        }
+        System.out.println("Invalid Input Try Again");
+        return readNumber(); 
+    }
+    
+    
 }
