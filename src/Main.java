@@ -1,4 +1,3 @@
-package checkpoint;
 
 import java.util.Scanner;
 
