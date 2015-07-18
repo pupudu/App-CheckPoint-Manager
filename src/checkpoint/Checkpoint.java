@@ -74,10 +74,12 @@ public class Checkpoint {
      * @param number - Number of the line to be modified
      * @param newCheckpoint New details which will be used to replace old
      * details
+     * return true if file was modified, false if not
      */
-    private static void modifyFile(int number, String newCheckpoint) {
+    private static boolean modifyFile(int number, String newCheckpoint) {
         BufferedReader br = null;
         BufferedWriter bw = null;
+        boolean isModified = false;
         try {
             String line;
             String text = "";
@@ -86,12 +88,17 @@ public class Checkpoint {
                 String[] tokens = line.split(";");
                 if (tokens[0].equals("" + number)) {
                     line = newCheckpoint;   //replace matching lines with new checkpoint information
+                    isModified=true;
                 }
                 line = ("".equals(line)) ? line : line + System.lineSeparator();    //add a new line if not an empty string
                 text = text + line;         // append line by line to create the modified text content
             }
+            if(!isModified){
+                return false;
+            }
             bw = new BufferedWriter(new FileWriter("Log.txt", false));  //open log file to write modified content
             bw.append(text);
+            return true;
         } catch (Exception ex) {
             int option = JOptionPane.showConfirmDialog(null, "File write error, Do you want to exit the program?", "File Read Error", 0);
             if (option == 0) {
@@ -110,6 +117,7 @@ public class Checkpoint {
             } catch (IOException ex) {
             }
         }
+        return false;
     }
 
     /**
@@ -141,17 +149,18 @@ public class Checkpoint {
      * @param number - Number of the line to be modified
      * @param time - New timestamp to replace old timestamp(if applicable)
      * @param state - New state to replace old state(if applicable)
+     * @return true if modified, false if not
      */
-    public static void modifyCheckpoint(int number, Long time, String state) {
+    public static boolean modifyCheckpoint(int number, Long time, String state) {
         String line = number + ";" + time + ";" + state;
-        modifyFile(number, line);
+        return modifyFile(number, line);
     }
 
     /**
      * @param number Number of the checkpoint to be deleted
      */
-    public static void deleteCheckpoint(int number) {
-        modifyFile(number, "");
+    public static boolean deleteCheckpoint(int number) {
+        return modifyFile(number, "");
     }
 
     /**
