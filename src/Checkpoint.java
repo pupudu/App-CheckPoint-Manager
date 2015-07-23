@@ -1,11 +1,9 @@
-package checkpoint;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import javax.swing.JOptionPane;
 
 public class Checkpoint {
 
@@ -28,12 +26,8 @@ public class Checkpoint {
             }
             return text;
         } catch (Exception ex) {
-            int option = JOptionPane.showConfirmDialog(null, "File read error, Do you want to exit the program?", "File Read Error", 0);
-            if (option == 0) {
-                System.exit(1);
-            } else {
-                return searchCheckpoint(targetStr, searchType);     //raise error until solved or system exists
-            }
+            System.out.println("File read error, Check Log.txt File location and try again");
+            System.exit(1);
         } finally {
             try {
                 if (br != null) {
@@ -45,6 +39,9 @@ public class Checkpoint {
         return null;
     }
 
+    /**
+    * Adds a new checkpoint based on number, timestamp and app state
+    */
     public static void addCheckpoint(int number, long time, String state) {
         String toOut = number + ";" + time + ";" + state;       //format line to print to file
         BufferedWriter bw = null;
@@ -54,12 +51,8 @@ public class Checkpoint {
             bw.append(System.lineSeparator());  //new line after each append
 
         } catch (Exception ex) {
-            int option = JOptionPane.showConfirmDialog(null, "File write error, Do you want to exit the program?", "File Read Error", 0);
-            if (option == 0) {
-                System.exit(1);
-            } else {
-                addCheckpoint(number, time, state);     //repeatedly try to write until issue solved or system exists
-            }
+            System.out.println("File write error, try again");
+            System.exit(1);
         } finally {
             try {
                 if (bw != null) {
@@ -100,12 +93,8 @@ public class Checkpoint {
             bw.append(text);
             return true;
         } catch (Exception ex) {
-            int option = JOptionPane.showConfirmDialog(null, "File write error, Do you want to exit the program?", "File Read Error", 0);
-            if (option == 0) {
-                System.exit(1);
-            } else {
-                modifyFile(number, newCheckpoint);
-            }
+            System.out.println("File read error, Check Log.txt File location and try again");
+            System.exit(1);
         } finally {
             try {
                 if (br != null) {

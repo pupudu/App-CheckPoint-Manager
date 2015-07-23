@@ -3,6 +3,9 @@ import java.util.Scanner;
 
 public class Main {
 
+	/**
+	*	Performs commandline operations to demonstrate application
+	*/
     public static void main(String[] args) {
         /*Display main Menu*/
         displayMainMenu();
